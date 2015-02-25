@@ -7,5 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Fedor Nezhivoy <gyzerok@gmail.com> (https://github.com/gyzerok)",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "node-ssdp": "^2.0.1"
+  }
 }
