@@ -1,0 +1,5 @@
+.gitignore
+.npmignore
+src
+tasks
+Gruntfile.js

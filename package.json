@@ -1,12 +1,28 @@
 {
   "name": "nodecast-js",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Casting client module for Chromecast/UPnP/DLNA",
+  "keywords": [
+    "chromecast",
+    "dlna",
+    "upnp",
+    "cast",
+    "client"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Fedor Nezhivoy <gyzerok@gmail.com> (https://github.com/gyzerok)",
+  "author": {
+    "name": "Fedor Nezhivoy",
+    "email": "gyzerok@gmail.com",
+    "url": "https://github.com/gyzerok"
+  },
+  "homepage": "https://github.com/gyzerok/nodecast-js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gyzerok/nodecast-js"
+  },
   "license": "MIT",
   "dependencies": {
     "castv2-client": "0.0.8",
