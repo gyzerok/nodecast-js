@@ -1,6 +1,6 @@
 {
   "name": "nodecast-js",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Casting client module for Chromecast/UPnP/DLNA",
   "keywords": [
     "chromecast",
@@ -23,7 +23,10 @@
     "type": "git",
     "url": "https://github.com/gyzerok/nodecast-js"
   },
-  "license": "MIT",
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/gyzerok/nodecast-js/blob/master/LICENSE"
+  },
   "dependencies": {
     "castv2-client": "0.0.8",
     "upnp-mediarenderer-client": "0.0.2"
