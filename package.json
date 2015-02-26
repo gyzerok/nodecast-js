@@ -9,7 +9,8 @@
   "author": "Fedor Nezhivoy <gyzerok@gmail.com> (https://github.com/gyzerok)",
   "license": "MIT",
   "dependencies": {
-    "node-ssdp": "^2.0.1"
+    "castv2-client": "0.0.8",
+    "upnp-mediarenderer-client": "0.0.2"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

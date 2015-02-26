@@ -3,6 +3,8 @@
 var SSDP = require('./SSDP');
 var EventEmitter = require('events').EventEmitter;
 var http = require('http');
+var Chromecast = require('./devices/Chromecast');
+var UPnP = require('./devices/UPnP');
 
 function getXML(address, cb) {
     http.get(address, function (res) {
@@ -30,18 +32,34 @@ class Browser extends EventEmitter {
     constructor() {
         this._chromecastSSDP = new SSDP(3333);
         this._upnpSSDP = new SSDP(3334);
+        this._devices = [];
     }
 
     searchChromecast() {
         search(this._chromecastSSDP, (headers, rinfo, xml) => {
-            console.log(getFriendlyName(xml));
+
+            if (xml.search('<manufacturer>Google Inc.</manufacturer>') == -1) return;
+
+            this._devices.push(new Chromecast({
+                name: getFriendlyName(xml),
+                address: rinfo.address,
+                xml: xml,
+                type: 'chc'
+            }));
+            this.emit('deviceOn');
         });
         this._chromecastSSDP.search('urn:dial-multiscreen-org:service:dial:1');
     }
 
     searchUPnP() {
         search(this._upnpSSDP, (headers, rinfo, xml) => {
-            console.log(getFriendlyName(xml));
+            this._devices.push(new UPnP({
+                name: getFriendlyName(xml),
+                address: rinfo.address,
+                xml: xml,
+                type: 'chc'
+            }));
+            this.emit('deviceOn');
         });
         this._upnpSSDP.search('urn:schemas-upnp-org:device:MediaRenderer:1');
     }
@@ -58,6 +76,10 @@ class Browser extends EventEmitter {
 
     onDevice(cb) {
         this.on('deviceOn', cb);
+    }
+
+    getList() {
+        return this._devices;
     }
 }
 
