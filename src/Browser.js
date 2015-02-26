@@ -39,9 +39,11 @@ class Browser extends EventEmitter {
         search(this._chromecastSSDP, (headers, rinfo, xml) => {
 
             if (xml.search('<manufacturer>Google Inc.</manufacturer>') == -1) return;
+            var name = getFriendlyName(xml);
+            if (!name) return;
 
             this._devices.push(new Chromecast({
-                name: getFriendlyName(xml),
+                name: name,
                 address: rinfo.address,
                 xml: xml,
                 type: 'chc'
@@ -53,8 +55,12 @@ class Browser extends EventEmitter {
 
     searchUPnP() {
         search(this._upnpSSDP, (headers, rinfo, xml) => {
+
+            var name = getFriendlyName(xml);
+            if (!name) return;
+
             this._devices.push(new UPnP({
-                name: getFriendlyName(xml),
+                name: name,
                 address: rinfo.address,
                 xml: xml,
                 type: 'chc'
@@ -69,7 +75,7 @@ class Browser extends EventEmitter {
         this.searchUPnP();
     }
 
-    stop() {
+    destroy() {
         this._chromecastSSDP.destroy();
         this._upnpSSDP.destroy();
     }
