@@ -1,10 +1,6 @@
-nodecast-js
-===========
+'use strict';
 
-Nodecast-js is a simple module for streaming media to Chromecast/UPnP/DLNA.
-
-```javascript
-var Browser = require('nodecast-js');
+var Browser = require('../lib/Browser');
 
 var url = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/big_buck_bunny_1080p.mp4';
 var timestamp = 60; // in seconds
@@ -16,10 +12,9 @@ browser.onDevice(function (device) {
     });
 
     device.play(url, timestamp);
+
+    setTimeout(function () {
+        device.stop();
+    }, 60000);
 });
 browser.start();
-
-browser.getList(); // list of currently discovered devices
-
-browser.destroy(); // destroy your browser
-```

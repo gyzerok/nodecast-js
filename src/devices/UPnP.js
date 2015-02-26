@@ -6,7 +6,10 @@ var MediaRenderer = require('upnp-mediarenderer-client');
 class UPnP extends Device {
 
     constructor(opts) {
-        super(opts);
+        this.host = opts.address;
+        this.name = opts.name;
+        this.xml = opts.xml;
+        this.type = opts.type;
     }
 
     play(url, timestamp) {
@@ -24,3 +27,5 @@ class UPnP extends Device {
         this._player = null;
     }
 }
+
+module.exports = UPnP;

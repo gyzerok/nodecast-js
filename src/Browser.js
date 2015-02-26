@@ -10,7 +10,7 @@ function getXML(address, cb) {
     http.get(address, function (res) {
         var body = '';
         res.on('data', chunk => body += chunk);
-        res.on('end', () => cb(body));
+        res.on('end', () => cb(body.toString()));
     });
 }
 
@@ -42,7 +42,7 @@ class Browser extends EventEmitter {
             var name = getFriendlyName(xml);
             if (!name) return;
 
-            new Chromecast({
+            var device = new Chromecast({
                 name: name,
                 address: rinfo.address,
                 xml: xml,
@@ -65,8 +65,8 @@ class Browser extends EventEmitter {
             var device = new UPnP({
                 name: name,
                 address: rinfo.address,
-                xml: xml,
-                type: 'chc'
+                xml: headers['LOCATION'],
+                type: 'upnp'
             });
 
             this._devices.push(device);

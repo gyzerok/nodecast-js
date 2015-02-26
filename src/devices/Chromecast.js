@@ -2,21 +2,22 @@
 
 var Device = require('./Device');
 var Client = require('castv2-client').Client;
-var MediaReceiver = require('catsv2-client').DefaultMediaReceiver;
-
-function noop() { return undefined; }
+var MediaReceiver = require('castv2-client').DefaultMediaReceiver;
 
 class Chromecast extends Device {
 
     constructor(opts) {
-        super(opts);
+        this.host = opts.address;
+        this.name = opts.name;
+        this.xml = opts.xml;
+        this.type = opts.type;
     }
 
     play(url, timestamp) {
         if (this._client) this._client.close();
 
         this._client = new Client();
-        this._client.connect(this._host, err => {
+        this._client.connect(this.host, err => {
             if (err) return this.emit('error', err);
 
             this._client.launch(MediaReceiver, (err, player) => {
@@ -42,11 +43,8 @@ class Chromecast extends Device {
     }
 
     stop() {
-        this._player.stop(() => {
-            this._client.stop(() => {
-                this._client.close();
-                this._client = null;
-            });
-        });
+        this._player.stop();
     }
 }
+
+module.exports = Chromecast;
