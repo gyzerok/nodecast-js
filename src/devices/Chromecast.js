@@ -43,7 +43,11 @@ class Chromecast extends Device {
     }
 
     stop() {
-        this._player.stop();
+        if (!this._player) return;
+
+        this._player.stop(function () {
+            this._player = null;
+        }.bind(this));
     }
 }
 

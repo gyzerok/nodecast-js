@@ -23,8 +23,11 @@ class UPnP extends Device {
     }
 
     stop() {
-        this._player.stop();
-        this._player = null;
+        if (!this._player) return;
+
+        this._player.stop(function () {
+            this._player = null;
+        }.bind(this));
     }
 }
 
