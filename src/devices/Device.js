@@ -18,6 +18,10 @@ class Device extends EventEmitter {
     stop() {
         throw 'Not implemented';
     }
+
+    onError(cb) {
+        this.on('error', cb);
+    }
 }
 
 module.exports = Device;

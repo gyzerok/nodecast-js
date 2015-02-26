@@ -11,6 +11,10 @@ var timestamp = 60; // in seconds
 
 var browser = new Browser();
 browser.onDevice(function (device) {
+    device.onError(function (err) {
+        console.log(err);
+    });
+
     device.play(url, timestamp);
 });
 
