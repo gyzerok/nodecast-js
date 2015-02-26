@@ -42,13 +42,16 @@ class Browser extends EventEmitter {
             var name = getFriendlyName(xml);
             if (!name) return;
 
-            this._devices.push(new Chromecast({
+            new Chromecast({
                 name: name,
                 address: rinfo.address,
                 xml: xml,
                 type: 'chc'
-            }));
-            this.emit('deviceOn');
+            });
+
+            this._devices.push(device);
+
+            this.emit('deviceOn', device);
         });
         this._chromecastSSDP.search('urn:dial-multiscreen-org:service:dial:1');
     }
@@ -59,13 +62,16 @@ class Browser extends EventEmitter {
             var name = getFriendlyName(xml);
             if (!name) return;
 
-            this._devices.push(new UPnP({
+            var device = new UPnP({
                 name: name,
                 address: rinfo.address,
                 xml: xml,
                 type: 'chc'
-            }));
-            this.emit('deviceOn');
+            });
+
+            this._devices.push(device);
+
+            this.emit('deviceOn', device);
         });
         this._upnpSSDP.search('urn:schemas-upnp-org:device:MediaRenderer:1');
     }
