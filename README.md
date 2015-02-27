@@ -3,6 +3,12 @@ nodecast-js
 
 Nodecast-js is a simple module for streaming media to Chromecast/UPnP/DLNA.
 
+## Installation
+    
+    npm install nodecast-js --save
+
+## Usage
+
 ```javascript
 var Browser = require('nodecast-js');
 
