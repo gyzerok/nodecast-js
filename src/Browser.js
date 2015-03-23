@@ -1,23 +1,24 @@
-'use strict';
+/* @flow */
 
 var SSDP = require('./SSDP');
 var EventEmitter = require('events').EventEmitter;
 var http = require('http');
 var Chromecast = require('./devices/Chromecast');
 var UPnP = require('./devices/UPnP');
+var Device = require('./devices/Device');
 
-function getXML(address, cb) {
-    http.get(address, function (res) {
-        var body = '';
-        res.on('data', chunk => body += chunk);
-        res.on('end', () => cb(body.toString()));
+function getXML(address: string, cb: (xml: string) => void): void {
+    http.get(address, function (res: any): void {
+        var body: string = '';
+        res.on('data', function (chunk: Buffer): void { body += chunk });
+        res.on('end', () => cb(body));
     });
 }
 
-function search(ssdp, cb) {
+function search(ssdp: SSDP, cb: Function) {
     ssdp.onResponse((headers, rinfo) => {
         if (!headers['LOCATION'] || headers['LOCATION'].indexOf('https://') !== -1) return;
-        getXML(headers['LOCATION'], function (xml) {
+        getXML(headers['LOCATION'], xml => {
             cb(headers, rinfo, xml);
         });
     });
@@ -28,6 +29,9 @@ function getFriendlyName(xml) {
 }
 
 class Browser extends EventEmitter {
+    _chromecastSSDP: SSDP;
+    _upnpSSDP: SSDP;
+    _devices: Array<Device>;
 
     constructor() {
         this._chromecastSSDP = new SSDP(3333);
@@ -35,7 +39,7 @@ class Browser extends EventEmitter {
         this._devices = [];
     }
 
-    searchChromecast() {
+    searchChromecast(): void {
         search(this._chromecastSSDP, (headers, rinfo, xml) => {
 
             if (xml.search('<manufacturer>Google Inc.</manufacturer>') == -1) return;
@@ -56,7 +60,7 @@ class Browser extends EventEmitter {
         this._chromecastSSDP.search('urn:dial-multiscreen-org:service:dial:1');
     }
 
-    searchUPnP() {
+    searchUPnP(): void {
         search(this._upnpSSDP, (headers, rinfo, xml) => {
 
             var name = getFriendlyName(xml);
@@ -76,21 +80,21 @@ class Browser extends EventEmitter {
         this._upnpSSDP.search('urn:schemas-upnp-org:device:MediaRenderer:1');
     }
 
-    start() {
+    start(): void {
         this.searchChromecast();
         this.searchUPnP();
     }
 
-    destroy() {
+    destroy(): void {
         this._chromecastSSDP.destroy();
         this._upnpSSDP.destroy();
     }
 
-    onDevice(cb) {
+    onDevice(cb: Function): void {
         this.on('deviceOn', cb);
     }
 
-    getList() {
+    getList(): Array<Device> {
         return this._devices;
     }
 }

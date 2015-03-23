@@ -1,18 +1,23 @@
-'use strict';
+/* @flow */
 
 var Device = require('./Device');
 var MediaRenderer = require('upnp-mediarenderer-client');
 
 class UPnP extends Device {
+    host: string;
+    name: string;
+    xml: string;
+    type: string;
+    _player: any;
 
-    constructor(opts) {
+    constructor(opts: Object) {
         this.host = opts.address;
         this.name = opts.name;
         this.xml = opts.xml;
         this.type = opts.type;
     }
 
-    play(url, timestamp) {
+    play(url: string, timestamp: number): void {
         if (this._player) this._player.stop();
 
         this._player = new MediaRenderer(this.xml);
@@ -22,12 +27,12 @@ class UPnP extends Device {
         });
     }
 
-    stop() {
+    stop(): void {
         if (!this._player) return;
 
-        this._player.stop(function () {
+        this._player.stop(() => {
             this._player = null;
-        }.bind(this));
+        });
     }
 }
 

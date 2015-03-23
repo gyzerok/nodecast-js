@@ -1,18 +1,18 @@
-'use strict';
+/* @flow */
 
 var EventEmitter = require('events').EventEmitter;
 
 class Device extends EventEmitter {
 
-    play(opts, timestamp) {
+    play(url: string, timestamp: number): void {
         throw 'Not implemented';
     }
 
-    stop() {
+    stop(): void {
         throw 'Not implemented';
     }
 
-    onError(cb) {
+    onError(cb: Function): void {
         this.on('error', cb);
     }
 }

@@ -1,23 +1,23 @@
-'use strict';
+/* @flow */
 
 var EventEmitter = require('events').EventEmitter;
 var dgram = require('dgram');
 
-var BROADCAST_ADDR = '239.255.255.250';
-var BROADCAST_PORT = 1900;
-var M_SEARCH = 'M-SEARCH * HTTP/1.1\r\nHost: ' + BROADCAST_ADDR + ':' + BROADCAST_PORT + '\r\nMan: "ssdp:discover"\r\nST: %st\r\nMX: 3\r\n\r\n';
-var SEND_INTERVAL = 5000;
+var BROADCAST_ADDR: string = '239.255.255.250';
+var BROADCAST_PORT: number = 1900;
+var M_SEARCH: string = 'M-SEARCH * HTTP/1.1\r\nHost: ' + BROADCAST_ADDR + ':' + BROADCAST_PORT + '\r\nMan: "ssdp:discover"\r\nST: %st\r\nMX: 3\r\n\r\n';
+var SEND_INTERVAL: number = 5000;
 
 var ssdpHeader = /^([^:]+):\s*(.*)$/;
 
-function noop() { return undefined; }
+function noop(): void { return undefined; }
 
-function getHeaders(res) {
+function getHeaders(res: Object): Object<string, mixed> {
     var lines = res.split('\r\n');
 
     var headers = {};
 
-    lines.forEach(function (line) {
+    lines.forEach(function (line: string): void {
         if (line.length) {
             var pairs = line.match(ssdpHeader);
             if (pairs) headers[pairs[1].toUpperCase()] = pairs[2]; // e.g. {'HOST': 239.255.255.250:1900}
@@ -27,7 +27,7 @@ function getHeaders(res) {
     return headers
 }
 
-function getStatusCode(res) {
+function getStatusCode(res: Object): number {
     var lines = res.split('\r\n');
     var type = lines.shift().split(' '); // command, such as "NOTIFY * HTTP/1.1"
 
@@ -45,14 +45,17 @@ function parseResponse(message, rinfo) {
     this.emit('response', headers, rinfo);
 }
 
-function send(st) {
+function send(st: string): void {
     var message = new Buffer(M_SEARCH.replace('%st', st), 'ascii');
     this._socket.send(message, 0, message.length, BROADCAST_PORT, BROADCAST_ADDR, noop);
 }
 
 class SSDP extends EventEmitter {
+    _processed: Array<string>;
+    _socket: any;
+    _interval: any;
 
-    constructor(port) {
+    constructor(port: number) {
         this._processed = [];
         this._socket = dgram.createSocket('udp4');
         this._socket.on('message', parseResponse.bind(this));
@@ -61,16 +64,16 @@ class SSDP extends EventEmitter {
         });
     }
 
-    search(st) {
+    search(st: string): void {
         send.call(this, st);
         this._interval = setInterval(send.bind(this, st), SEND_INTERVAL);
     }
 
-    onResponse(cb) {
+    onResponse(cb: Function): void {
         this.on('response', cb);
     }
 
-    destroy() {
+    destroy(): void {
         this._socket = null;
         if (!this._interval) return;
         clearInterval(this._interval);

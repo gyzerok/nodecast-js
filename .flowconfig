@@ -1,0 +1,12 @@
+[ignore]
+.*/lib/.*
+.*/examples/.*
+.*/tasks/.*
+
+[include]
+
+[libs]
+./flowlib
+
+[options]
+module.system=node
