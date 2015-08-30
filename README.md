@@ -20,12 +20,14 @@ browser.onDevice(function (device) {
     device.onError(function (err) {
         console.log(err);
     });
+    
+    console.log(browser.getList()); // list of currently discovered devices
 
     device.play(url, timestamp);
 });
 browser.start();
 
-browser.getList(); // list of currently discovered devices
-
-browser.destroy(); // destroy your browser
+setTimeout(function () {
+    browser.destroy(); // destroy your browser
+}, 20000);
 ```
