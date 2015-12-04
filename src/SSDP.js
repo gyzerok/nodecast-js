@@ -74,6 +74,7 @@ class SSDP extends EventEmitter {
     }
 
     destroy(): void {
+        this._socket.close();
         this._socket = null;
         if (!this._interval) return;
         clearInterval(this._interval);
