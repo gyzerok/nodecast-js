@@ -2,4 +2,5 @@
 .npmignore
 src
 tasks
+examples
 Gruntfile.js

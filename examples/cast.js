@@ -1,6 +1,4 @@
-'use strict';
-
-var Browser = require('../lib/Browser');
+var Browser = require('nodecast-js');
 
 var url = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/big_buck_bunny_1080p.mp4';
 var timestamp = 60; // in seconds
@@ -11,10 +9,12 @@ browser.onDevice(function (device) {
         console.log(err);
     });
 
-    device.play(url, timestamp);
+    console.log(browser.getList()); // list of currently discovered devices
 
-    setTimeout(function () {
-        device.stop();
-    }, 60000);
+    device.play(url, timestamp);
 });
 browser.start();
+
+setTimeout(function () {
+    browser.destroy(); // destroy your browser
+}, 20000);
