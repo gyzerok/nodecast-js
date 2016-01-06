@@ -1,6 +1,6 @@
 {
   "name": "nodecast-js",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "Casting client module for Chromecast/UPnP/DLNA",
   "keywords": [
     "chromecast",
