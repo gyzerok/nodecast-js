@@ -11,6 +11,7 @@ class UPnP extends Device {
     _player: any;
 
     constructor(opts: Object) {
+        super();
         this.host = opts.address;
         this.name = opts.name;
         this.xml = opts.xml;

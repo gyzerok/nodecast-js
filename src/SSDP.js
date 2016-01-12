@@ -56,6 +56,7 @@ class SSDP extends EventEmitter {
     _interval: any;
 
     constructor(port: number) {
+        super();
         this._processed = [];
         this._socket = dgram.createSocket('udp4');
         this._socket.on('message', parseResponse.bind(this));

@@ -25,7 +25,9 @@ function search(ssdp: SSDP, cb: Function) {
 }
 
 function getFriendlyName(xml) {
-    return xml.match(/<friendlyName>(.+?)<\/friendlyName>/)[1];
+    var matches = xml.match(/<friendlyName>(.+?)<\/friendlyName>/);
+    if (!matches) return;
+    return matches[1];
 }
 
 class Browser extends EventEmitter {
@@ -34,6 +36,7 @@ class Browser extends EventEmitter {
     _devices: Array<Device>;
 
     constructor() {
+        super();
         this._chromecastSSDP = new SSDP(3333);
         this._upnpSSDP = new SSDP(3334);
         this._devices = [];
