@@ -29,8 +29,8 @@
     "url": "https://github.com/gyzerok/nodecast-js/blob/master/LICENSE"
   },
   "dependencies": {
-    "castv2-client": "0.0.8",
-    "upnp-mediarenderer-client": "0.0.2"
+    "castv2-client": "^1.1.2",
+    "upnp-mediarenderer-client": "^1.2.4"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
